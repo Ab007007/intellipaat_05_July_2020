@@ -58,7 +58,7 @@ public class ActitimeUtils extends DriverUtils {
 	public static void selectModule(String moduleName) 
 	{
 		System.out.println("selecting module " + moduleName);
-		switch (moduleName) {
+		switch (moduleName.toUpperCase()) {
 		case "TASKS":
 			driver.findElement(By.xpath("//div[text()='TASKS']/parent::a")).click();
 			validateTitle("actiTIME - Task List");
