@@ -7,15 +7,14 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.intellipaat.selenium.utils.ActitimeUtils;
 
-public class FrameDemo {
+public class FramesDemo {
+
 	
 	public static void main(String[] args) {
 		WebDriver driver = ActitimeUtils.getDriver();
 		ActitimeUtils.launch("https://jqueryui.com/droppable/");
 		
-	//	driver.switchTo().frame(0);
-		
-		driver.switchTo().frame(ActitimeUtils.getElement("xpath", "//iframe[contains(@src,'default')]"));
+		driver.switchTo().frame(0);
 		Actions act = new Actions(driver);
 		WebElement source_element = driver.findElement(By.id("draggable"));
 		WebElement target_element = driver.findElement(By.id("droppable"));
@@ -30,14 +29,6 @@ public class FrameDemo {
 		System.out.println("source_element" + source_element.getText());
 		System.out.println("target_element" + target_element.getText());
 		
-		driver.switchTo().defaultContent();
 		
-		ActitimeUtils.click("linktext", "Draggable");
-		
-		
-		
-		
-		
-	}	
-		
+	}
 }
