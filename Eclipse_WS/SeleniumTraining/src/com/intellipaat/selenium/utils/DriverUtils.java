@@ -7,6 +7,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -14,10 +17,38 @@ public class DriverUtils {
 
 	public static WebDriver driver = null;
 
-	public static WebDriver getDriver() {
-		System.out.println("Creating WebDriver object");
-		System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-		driver = new ChromeDriver();
+	public static WebDriver getDriver(String... type) {
+		String browsertype = null;
+		if (type.length == 0) {
+			browsertype = "chrome";
+		} else {
+			browsertype = type[0];
+		}
+		System.out.println("Creating WebDriver object of type " + browsertype);
+		
+		switch (browsertype) {
+		case "chrome":
+			System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+			driver = new ChromeDriver();
+			break;
+		case "ff":
+			System.setProperty("webdriver.gecko.driver", "drivers/geckodriver.exe");
+			driver = new FirefoxDriver();
+			break;
+		case "ie":
+			System.setProperty("webdriver.ie.driver", "drivers/IEDriverServer.exe");
+			driver = new InternetExplorerDriver();
+			break;
+		case "edge":
+			System.setProperty("webdriver.edge.driver", "drivers/msedgedriver.exe");
+			driver = new EdgeDriver();
+			break;
+
+		default:
+			System.out.println("Please contact FW Developers to support " + browsertype );
+			break;
+		}
+		
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -65,7 +96,7 @@ public class DriverUtils {
 			System.out.println("invalid type passed in getElement. Please check your input");
 			break;
 		}
-		
+
 		return ele;
 
 	}
@@ -104,48 +135,50 @@ public class DriverUtils {
 			System.out.println("invalid type passed in getElement. Please check your input");
 			break;
 		}
-		
+
 		return ele;
 
 	}
 
-
 	/**
 	 * Reusable function to perform click
+	 * 
 	 * @param type  - id, name, classname, tagname, linktext, partiallinktext, css,
 	 *              xpath
 	 * @param value - based on type, its corresponding value
 	 * @param value
 	 */
 	public static void click(String type, String value) {
-		
-		System.out.println("Performing click operation using " +type + " and " + value);
+
+		System.out.println("Performing click operation using " + type + " and " + value);
 		getElement(type, value).click();
-	
+
 	}
+
 	/**
 	 * Reusable function to perform type operation on the webElement
+	 * 
 	 * @param type  - id, name, classname, tagname, linktext, partiallinktext, css,
 	 *              xpath
 	 * @param value - based on type, its corresponding value
 	 * @param value
 	 */
-	public static void type(String type,String value, String text) {
-		
-		System.out.println("Performing type operation using " +type + " and " + value + " - " + text);
+	public static void type(String type, String value, String text) {
+
+		System.out.println("Performing type operation using " + type + " and " + value + " - " + text);
 		getElement(type, value).sendKeys(text);
-	
+
 	}
-	
+
 	public static String getText(String type, String value) {
 		System.out.println("Trying to get the text from " + type + " and " + value);
 		String text = getElement(type, value).getText();
-		System.out.println(" Found text on element  - "  + text);
+		System.out.println(" Found text on element  - " + text);
 		return text;
 	}
-	
+
 	public static void sleep(long ms) {
-		System.out.println("Sleep!!!!!!!!!!!!!!!!!!"  +ms);
+		System.out.println("Sleep!!!!!!!!!!!!!!!!!!" + ms);
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException e) {
@@ -153,25 +186,23 @@ public class DriverUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void waitForVisible(String type, String value) {
 		System.out.println("Waiting for the visibility of Element !!!!");
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOf(getElement(type, value)));
-		
+
 		System.out.println("Element is visible");
-		
+
 	}
+
 	public static void waitForInVisible(String type, String value) {
 		System.out.println("Waiting for the invisibility of Element !!!!");
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.invisibilityOf(getElement(type, value)));
-		
+
 		System.out.println("Element is invisible");
-		
+
 	}
-	
-	
-	
-	
+
 }
